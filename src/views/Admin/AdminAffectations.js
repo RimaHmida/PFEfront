@@ -64,7 +64,6 @@ const AdminAffectations = () => {
       setSites(result.data.sites);
       toast.success("✅ Liste des affectations chargée avec succès!");
     }
-    
     setLoading(false);
   };
 
@@ -229,12 +228,17 @@ const AdminAffectations = () => {
             <CFormInput type="date" label="Fin" value={formData.date_fin}
               onChange={e => setFormData({ ...formData, date_fin: e.target.value })}
             />
-            <CFormSelect label="Ajouter un employé" onChange={e => handleAddEmployeToForm(e.target.value)}>
+            <CFormSelect
+              label="Ajouter un employé"
+              onChange={e => handleAddEmployeToForm(e.target.value)}
+              disabled={employes.length === 0}
+            >
               <option value="">-- Choisir un employé --</option>
               {employes.map(emp => (
                 <option key={emp.id} value={emp.id}>{emp.nom} {emp.prenom}</option>
               ))}
             </CFormSelect>
+            {employes.length === 0 && <small className="text-danger">Aucun employé disponible pour cette période.</small>}
             {formData.employes.map((emp, index) => (
               <div key={emp.id} style={{ border: '1px solid #eee', padding: '0.5rem', marginTop: '0.5rem' }}>
                 <strong>{employes.find(e => e.id === emp.id)?.nom} {employes.find(e => e.id === emp.id)?.prenom}</strong>
@@ -266,12 +270,18 @@ const AdminAffectations = () => {
         <CModalHeader>Ajouter Employé</CModalHeader>
         <CModalBody>
           <CForm>
-            <CFormSelect label="Employé" value={newEmp.employe_id} onChange={e => setNewEmp({ ...newEmp, employe_id: parseInt(e.target.value, 10) })}>
+            <CFormSelect
+              label="Employé"
+              value={newEmp.employe_id}
+              onChange={e => setNewEmp({ ...newEmp, employe_id: parseInt(e.target.value, 10) })}
+              disabled={employes.length === 0}
+            >
               <option value="">-- Choisir --</option>
               {employes.map(emp => (
                 <option key={emp.id} value={emp.id}>{emp.nom} {emp.prenom}</option>
               ))}
             </CFormSelect>
+            {employes.length === 0 && <small className="text-danger">Aucun employé disponible pour cette période.</small>}
             <CFormInput type="date" label="Début réel" value={newEmp.date_debut_reelle} onChange={e => setNewEmp({ ...newEmp, date_debut_reelle: e.target.value })} />
             <CFormInput type="date" label="Fin réel" value={newEmp.date_fin_reelle} onChange={e => setNewEmp({ ...newEmp, date_fin_reelle: e.target.value })} />
           </CForm>
