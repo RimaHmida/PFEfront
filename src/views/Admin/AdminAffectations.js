@@ -62,7 +62,9 @@ const AdminAffectations = () => {
       setListes(result.data.listes);
       setEmployes(result.data.employes);
       setSites(result.data.sites);
+      toast.success("✅ Liste des affectations chargée avec succès!");
     }
+    
     setLoading(false);
   };
 
