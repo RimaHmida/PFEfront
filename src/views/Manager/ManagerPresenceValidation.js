@@ -1,25 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import {
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CCol,
-  CRow,
-  CContainer,
-  CButton,
-  CFormCheck,
-  CSpinner,
+  CCard, CCardBody, CCardHeader, CCol, CRow, CContainer,
+  CButton, CSpinner
 } from '@coreui/react'
 import { toast } from 'react-toastify'
 
 const ManagerPresenceValidation = () => {
-  const [presences, setPresences] = useState([])
+  const [affectations, setAffectations] = useState([])
   const [loading, setLoading] = useState(true)
-  const [selectedIds, setSelectedIds] = useState([])
-
   const token = localStorage.getItem('token')
 
-  const fetchPresences = async () => {
+  const fetchAffectations = async () => {
     try {
       const res = await fetch('http://localhost:8000/api/manager/presences', {
         headers: {
@@ -27,9 +18,9 @@ const ManagerPresenceValidation = () => {
         },
       })
       const data = await res.json()
-      setPresences(data.data)
+      setAffectations(data.data)
       toast.success('✅ Présences à valider chargées')
-    } catch (err) {
+    } catch {
       toast.error('❌ Erreur lors du chargement')
     } finally {
       setLoading(false)
@@ -37,34 +28,21 @@ const ManagerPresenceValidation = () => {
   }
 
   useEffect(() => {
-    fetchPresences()
+    fetchAffectations()
   }, [token])
 
-  const handleToggle = (id) => {
-    setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
-    )
-  }
-
-  const handleValidate = async () => {
-    if (selectedIds.length === 0) {
-      toast.info('Veuillez sélectionner au moins une présence')
-      return
-    }
+  const handleValidate = async (affectationId) => {
     try {
-      const res = await fetch('http://localhost:8000/api/manager/presences/validate', {
+      const res = await fetch(`http://localhost:8000/api/manager/presences/validate/${affectationId}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ validate_ids: selectedIds }),
+          Authorization: `Bearer ${token}`
+        }
       })
       const result = await res.json()
       toast.success('✅ ' + result.message)
-      setSelectedIds([])
-      fetchPresences()
-    } catch (err) {
+      fetchAffectations()
+    } catch {
       toast.error('❌ Erreur lors de la validation')
     }
   }
@@ -74,29 +52,32 @@ const ManagerPresenceValidation = () => {
   return (
     <CContainer>
       <h2>Validation des Présences</h2>
-      {presences.length === 0 ? (
-        <p>Aucune présence à valider.</p>
+      {affectations.length === 0 ? (
+        <p>Aucune affectation à valider.</p>
       ) : (
-        presences.map((presence) => (
-          <CCard key={presence.id} className="mb-3">
+        affectations.map((aff) => (
+          <CCard key={aff.id} className="mb-3">
             <CCardHeader>
-              {presence.employe.nom} {presence.employe.prenom} | {presence.affectation_liste.site.nomsite}
+              {aff.site.nomsite} | {aff.date_debut} → {aff.date_fin}
             </CCardHeader>
             <CCardBody>
-              <p>Date : {presence.date}</p>
-              <CFormCheck
-                label="Valider cette présence"
-                checked={selectedIds.includes(presence.id)}
-                onChange={() => handleToggle(presence.id)}
-              />
+              <ul>
+                {aff.employes.map(emp => (
+                  <li key={emp.id}>
+                    {emp.nom} {emp.prenom} : 
+                    {emp.presences.map(p => ` ${p.date} (${p.present ? 'Présent' : 'Absent'})`).join(', ')}
+                  </li>
+                ))}
+              </ul>
+              <CButton
+                color="success"
+                onClick={() => handleValidate(aff.id)}
+              >
+                ✅ Valider l’affectation
+              </CButton>
             </CCardBody>
           </CCard>
         ))
-      )}
-      {presences.length > 0 && (
-        <CButton color="success" onClick={handleValidate} className="mt-3">
-          Valider les présences sélectionnées
-        </CButton>
       )}
     </CContainer>
   )

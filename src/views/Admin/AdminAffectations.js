@@ -50,6 +50,11 @@ const AdminAffectations = () => {
   const [newEmp, setNewEmp] = useState({ employe_id: '', date_debut_reelle: '', date_fin_reelle: '' });
   const [editEmp, setEditEmp] = useState({ date_debut_reelle: '', date_fin_reelle: '' });
 
+  const headerColor = "#1E3A8A";
+  const cardBg = "#FFFFFF";
+  const borderColor = "#E5E7EB";
+  const boxShadow = "0 4px 8px rgba(0, 0, 0, 0.05)";
+
   const fetchAffectations = async (dateDebut = null) => {
     let url = `${API_URL}/admin/affectation_listes`;
     if (dateDebut) {
@@ -174,17 +179,34 @@ const AdminAffectations = () => {
   if (loading) return <CSpinner color="primary" />;
 
   return (
-    <CContainer>
-      <h2>Gestion des Affectations</h2>
-      <CRow className="mb-3">
-        <CButton color="primary" onClick={() => setModalVisible(true)}>➕ Ajouter Affectation</CButton>
-      </CRow>
+    <CContainer style={{ marginTop: '30px' }}>
+      <div
+        style={{
+          background: headerColor,
+          padding: "16px",
+          borderRadius: "8px",
+          color: "white",
+          marginBottom: "24px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between"
+        }}
+      >
+        <h3 style={{ margin: 0 }}>Gestion des Affectations</h3>
+        <CButton
+          color="primary"
+          style={{ backgroundColor: "#3B82F6", borderColor: "#3B82F6" }}
+          onClick={() => setModalVisible(true)}
+        >
+          ➕ Ajouter Affectation
+        </CButton>
+      </div>
 
       <CRow>
         {listes.map(l => (
           <CCol key={l.id} md={6}>
-            <CCard className="mb-3">
-              <CCardHeader>
+            <CCard className="mb-3" style={{ border: `1px solid ${borderColor}`, backgroundColor: cardBg, borderRadius: '8px', boxShadow }}>
+              <CCardHeader style={{ background: headerColor, color: "#fff", fontWeight: "bold" }}>
                 📅 {l.date_debut} → {l.date_fin} | {l.site?.nomsite}
                 <CButton size="sm" color="danger" className="float-end" onClick={() => handleDeleteAffectation(l.id)}>❌</CButton>
                 <CButton size="sm" color="primary" className="float-end me-2" onClick={() => setAddEmpModal({ visible: true, affectationId: l.id })}>➕</CButton>
@@ -211,8 +233,9 @@ const AdminAffectations = () => {
         ))}
       </CRow>
 
+      {/* Modals identiques */}
       <CModal visible={modalVisible} onClose={() => setModalVisible(false)}>
-        <CModalHeader>Nouvelle Affectation</CModalHeader>
+        <CModalHeader style={{ background: headerColor, color: "white" }}>Nouvelle Affectation</CModalHeader>
         <CModalBody>
           <CForm>
             <CFormSelect label="Site" value={formData.site_id} onChange={e => setFormData({ ...formData, site_id: e.target.value })}>
@@ -238,7 +261,6 @@ const AdminAffectations = () => {
                 <option key={emp.id} value={emp.id}>{emp.nom} {emp.prenom}</option>
               ))}
             </CFormSelect>
-            {employes.length === 0 && <small className="text-danger">Aucun employé disponible pour cette période.</small>}
             {formData.employes.map((emp, index) => (
               <div key={emp.id} style={{ border: '1px solid #eee', padding: '0.5rem', marginTop: '0.5rem' }}>
                 <strong>{employes.find(e => e.id === emp.id)?.nom} {employes.find(e => e.id === emp.id)?.prenom}</strong>
@@ -267,7 +289,7 @@ const AdminAffectations = () => {
       </CModal>
 
       <CModal visible={addEmpModal.visible} onClose={() => setAddEmpModal({ visible: false, affectationId: null })}>
-        <CModalHeader>Ajouter Employé</CModalHeader>
+        <CModalHeader style={{ background: headerColor, color: "white" }}>Ajouter Employé</CModalHeader>
         <CModalBody>
           <CForm>
             <CFormSelect
@@ -281,7 +303,6 @@ const AdminAffectations = () => {
                 <option key={emp.id} value={emp.id}>{emp.nom} {emp.prenom}</option>
               ))}
             </CFormSelect>
-            {employes.length === 0 && <small className="text-danger">Aucun employé disponible pour cette période.</small>}
             <CFormInput type="date" label="Début réel" value={newEmp.date_debut_reelle} onChange={e => setNewEmp({ ...newEmp, date_debut_reelle: e.target.value })} />
             <CFormInput type="date" label="Fin réel" value={newEmp.date_fin_reelle} onChange={e => setNewEmp({ ...newEmp, date_fin_reelle: e.target.value })} />
           </CForm>
@@ -293,7 +314,7 @@ const AdminAffectations = () => {
       </CModal>
 
       <CModal visible={editEmpModal.visible} onClose={() => setEditEmpModal({ visible: false, pivotId: null })}>
-        <CModalHeader>Modifier Dates</CModalHeader>
+        <CModalHeader style={{ background: headerColor, color: "white" }}>Modifier Dates</CModalHeader>
         <CModalBody>
           <CForm>
             <CFormInput type="date" label="Début réel" value={editEmp.date_debut_reelle} onChange={e => setEditEmp({ ...editEmp, date_debut_reelle: e.target.value })} />
