@@ -9,6 +9,7 @@ import SecretairePresence from './views/secretaire/SecretairePresence'
 import ManagerPresenceValidation from './views/Manager/ManagerPresenceValidation'
 import AdminDashboard from './views/Admin/AdminDashboard'
 import Dashboard from './views/dashboard/Dashboard'
+import PaieValidations from './views/Paie/PaieValidations';
 
 // Base
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
@@ -111,6 +112,7 @@ const routes = [
   { path: '/forms/floating-labels', name: 'Floating Labels', element: FloatingLabels },
   { path: '/forms/layout', name: 'Layout', element: Layout },
   { path: '/forms/validation', name: 'Validation', element: Validation },
+  { path: '/paie/validations', name: 'Validations Paie', element: PaieValidations },
 
   // Icons
   { path: '/icons', exact: true, name: 'Icons', element: CoreUIIcons },

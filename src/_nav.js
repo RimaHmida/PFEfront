@@ -53,16 +53,21 @@ if (role === 'administrateur_it') {
     },
     {
       component: CNavItem,
+      name: 'Présence Journalière',
+      to: '/secretaire/presences',
+      icon: <CIcon icon={cilBell} customClassName="nav-icon" />,
+    },
+    {
+      component: CNavItem,
       name: 'Validation des Présences',
       to: '/manager/presences',
       icon: <CIcon icon={cilClipboard} customClassName="nav-icon" />,
     },
-  
     {
       component: CNavItem,
-      name: 'Présence Journalière',
-      to: '/secretaire/presences',
-      icon: <CIcon icon={cilBell} customClassName="nav-icon" />,
+      name: 'Consultation Paie',
+      to: '/paie/validations',
+      icon: <CIcon icon={cilClipboard} customClassName="nav-icon" />,
     },
   ]
 } else if (role === 'administrateur') {
@@ -113,7 +118,16 @@ if (role === 'administrateur_it') {
       },
     ]
   }
-
+  else if (role === 'paie') {
+    roleBased = [
+      {
+        component: CNavItem,
+        name: 'Validations',
+        to: '/paie/validations',
+        icon: <CIcon icon={cilClipboard} customClassName="nav-icon" />,
+      }
+    ]
+  }
   return [
     ...common,
     {

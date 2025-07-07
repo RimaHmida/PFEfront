@@ -262,8 +262,29 @@ const AdminEmployes = () => {
               <option value="justifié">Justifié</option>
               <option value="non justifié">Non justifié</option>
             </CFormSelect>
-            <CFormInput type="date" name="date_debut" value={congeForm.date_debut} onChange={handleCongeChange} className="mb-2" />
-            <CFormInput type="date" name="date_fin" value={congeForm.date_fin} onChange={handleCongeChange} className="mb-2" />
+            <CFormInput
+  type="date"
+  name="date_debut"
+  value={congeForm.date_debut}
+  onChange={e => {
+    const val = e.target.value;
+    setCongeForm(prev => ({
+      ...prev,
+      date_debut: val,
+      date_fin: prev.date_fin && prev.date_fin < val ? '' : prev.date_fin
+    }));
+  }}
+  className="mb-2"
+/>
+<CFormInput
+  type="date"
+  name="date_fin"
+  value={congeForm.date_fin}
+  min={congeForm.date_debut}
+  onChange={e => setCongeForm({ ...congeForm, date_fin: e.target.value })}
+  className="mb-2"
+/>
+
             <CFormTextarea name="description" value={congeForm.description} onChange={handleCongeChange} className="mb-2" />
             {(congeForm.type === "justifié" || congeForm.type === "maladie") && (
               <CFormInput type="file" name="document" onChange={handleCongeChange} className="mb-2" />

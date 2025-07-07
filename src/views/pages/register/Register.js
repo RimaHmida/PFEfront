@@ -1,24 +1,18 @@
 import React, { useState } from 'react'
 import {
   CButton,
-  CCard,
-  CCardBody,
-  CCol,
-  CContainer,
   CForm,
   CFormInput,
-  CInputGroup,
-  CInputGroupText,
   CFormSelect,
-  CRow,
+  CModal,
+  CModalHeader,
+  CModalTitle,
+  CModalBody,
+  CModalFooter,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
-import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
-const Register = () => {
-  const navigate = useNavigate()
-
+const AdminAddUser = ({ visible, onClose, onUserAdded }) => {
   const [formData, setFormData] = useState({
     nom: '',
     prenom: '',
@@ -28,7 +22,7 @@ const Register = () => {
     role: 'manager',
   })
 
-  const [errors, setErrors] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -36,146 +30,114 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setErrors(null)
+    setLoading(true)
     try {
-      const response = await fetch('http://localhost:8000/api/register', {
+      const token = localStorage.getItem('token')
+      const response = await fetch('http://localhost:8000/api/admin/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(formData),
       })
-
       const data = await response.json()
       if (!response.ok) {
-        setErrors(data)
+        toast.error(data.message || 'Erreur lors de la création.')
       } else {
-        localStorage.setItem('token', data.token)
-        navigate('/login')
+        toast.success('✅ Utilisateur créé avec succès')
+        onUserAdded()
+        onClose()
+        setFormData({
+          nom: '',
+          prenom: '',
+          email: '',
+          password: '',
+          password_confirmation: '',
+          role: 'manager',
+        })
       }
-    } catch (error) {
-      console.error(error)
-      setErrors({ message: 'Erreur lors de l’enregistrement.' })
+    } catch (err) {
+      toast.error('Erreur réseau')
+    } finally {
+      setLoading(false)
     }
   }
 
-  const rolesDisponibles = [
-    'administrateur_it',
-    'administrateur',
-    'manager',
-    'secretaire',
-    'agent paie',
-  ]
-
   return (
-    <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
-      <CContainer>
-        <CRow className="justify-content-center">
-          <CCol md={9} lg={7} xl={6}>
-            <CCard className="mx-4">
-              <CCardBody className="p-4">
-                <CForm onSubmit={handleSubmit}>
-                  <h1>Register</h1>
-                  <p className="text-body-secondary">Create your account</p>
-
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilUser} />
-                    </CInputGroupText>
-                    <CFormInput
-                      name="nom"
-                      placeholder="Nom"
-                      value={formData.nom}
-                      onChange={handleChange}
-                      required
-                    />
-                  </CInputGroup>
-
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilUser} />
-                    </CInputGroupText>
-                    <CFormInput
-                      name="prenom"
-                      placeholder="Prénom"
-                      value={formData.prenom}
-                      onChange={handleChange}
-                      required
-                    />
-                  </CInputGroup>
-
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>@</CInputGroupText>
-                    <CFormInput
-                      type="email"
-                      name="email"
-                      placeholder="Email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                    />
-                  </CInputGroup>
-
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilLockLocked} />
-                    </CInputGroupText>
-                    <CFormInput
-                      type="password"
-                      name="password"
-                      placeholder="Mot de passe"
-                      value={formData.password}
-                      onChange={handleChange}
-                      required
-                    />
-                  </CInputGroup>
-
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilLockLocked} />
-                    </CInputGroupText>
-                    <CFormInput
-                      type="password"
-                      name="password_confirmation"
-                      placeholder="Confirmer mot de passe"
-                      value={formData.password_confirmation}
-                      onChange={handleChange}
-                      required
-                    />
-                  </CInputGroup>
-
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>🎯</CInputGroupText>
-                    <CFormSelect name="role" value={formData.role} onChange={handleChange} required>
-                      {rolesDisponibles.map((role) => (
-                        <option key={role} value={role}>
-                          {role}
-                        </option>
-                      ))}
-                    </CFormSelect>
-                  </CInputGroup>
-
-                  {errors && (
-                    <div className="text-danger mb-3">
-                      {typeof errors === 'object'
-                        ? Object.values(errors).flat().map((err, i) => <div key={i}>{err}</div>)
-                        : errors.message}
-                    </div>
-                  )}
-
-                  <div className="d-grid">
-                    <CButton type="submit" color="success">
-                      Create Account
-                    </CButton>
-                  </div>
-                </CForm>
-              </CCardBody>
-            </CCard>
-          </CCol>
-        </CRow>
-      </CContainer>
-    </div>
+    <CModal visible={visible} onClose={onClose}>
+      <CModalHeader>
+        <CModalTitle>Ajouter un utilisateur</CModalTitle>
+      </CModalHeader>
+      <CModalBody>
+        <CForm onSubmit={handleSubmit}>
+          <CFormInput
+            className="mb-2"
+            placeholder="Nom"
+            name="nom"
+            value={formData.nom}
+            onChange={handleChange}
+            required
+          />
+          <CFormInput
+            className="mb-2"
+            placeholder="Prénom"
+            name="prenom"
+            value={formData.prenom}
+            onChange={handleChange}
+            required
+          />
+          <CFormInput
+            className="mb-2"
+            type="email"
+            placeholder="Email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+          <CFormInput
+            className="mb-2"
+            type="password"
+            placeholder="Mot de passe"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+          <CFormInput
+            className="mb-2"
+            type="password"
+            placeholder="Confirmer mot de passe"
+            name="password_confirmation"
+            value={formData.password_confirmation}
+            onChange={handleChange}
+            required
+          />
+          <CFormSelect
+            className="mb-2"
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            required
+          >
+            <option value="manager">Manager</option>
+            <option value="secretaire">Secrétaire</option>
+            <option value="agent_paie">Agent Paie</option>
+            <option value="administrateur">Administrateur</option>
+          </CFormSelect>
+          <CModalFooter>
+            <CButton color="secondary" onClick={onClose}>
+              Annuler
+            </CButton>
+            <CButton color="primary" type="submit" disabled={loading}>
+              {loading ? 'Création...' : 'Créer'}
+            </CButton>
+          </CModalFooter>
+        </CForm>
+      </CModalBody>
+    </CModal>
   )
 }
 
-export default Register
+export default AdminAddUser

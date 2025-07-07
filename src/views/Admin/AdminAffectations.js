@@ -81,6 +81,7 @@ const AdminAffectations = () => {
       toast.error('❌ Remplissez tous les champs');
       return;
     }
+    
     const result = await fetchSafeJSON(`${API_URL}/admin/affectation_listes`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -248,9 +249,11 @@ const AdminAffectations = () => {
                 fetchAffectations(e.target.value);
               }}
             />
-            <CFormInput type="date" label="Fin" value={formData.date_fin}
-              onChange={e => setFormData({ ...formData, date_fin: e.target.value })}
-            />
+           <CFormInput type="date" label="Fin" value={formData.date_fin}
+  min={formData.date_debut}
+  onChange={e => setFormData({ ...formData, date_fin: e.target.value })}
+/>
+
             <CFormSelect
               label="Ajouter un employé"
               onChange={e => handleAddEmployeToForm(e.target.value)}
@@ -264,18 +267,28 @@ const AdminAffectations = () => {
             {formData.employes.map((emp, index) => (
               <div key={emp.id} style={{ border: '1px solid #eee', padding: '0.5rem', marginTop: '0.5rem' }}>
                 <strong>{employes.find(e => e.id === emp.id)?.nom} {employes.find(e => e.id === emp.id)?.prenom}</strong>
+                
+                
                 <CFormInput type="date" label="Début réel" value={emp.date_debut_reelle}
                   onChange={e => {
                     const copy = [...formData.employes];
                     copy[index].date_debut_reelle = e.target.value;
                     setFormData({ ...formData, employes: copy });
                   }} />
-                <CFormInput type="date" label="Fin réel" value={emp.date_fin_reelle}
-                  onChange={e => {
-                    const copy = [...formData.employes];
-                    copy[index].date_fin_reelle = e.target.value;
-                    setFormData({ ...formData, employes: copy });
-                  }} />
+         <CFormInput
+  type="date"
+  label="Fin réel"
+  value={emp.date_fin_reelle}
+  min={emp.date_debut_reelle}
+  max={formData.date_fin}
+
+  onChange={e => {
+    const copy = [...formData.employes];
+    copy[index].date_fin_reelle = e.target.value;
+    setFormData({ ...formData, employes: copy });
+  }}
+/>
+
                 <CButton color="danger" size="sm" style={{ marginTop: '0.3rem' }}
                   onClick={() => handleRemoveEmployeFromForm(index)}>❌ Retirer</CButton>
               </div>
@@ -317,8 +330,28 @@ const AdminAffectations = () => {
         <CModalHeader style={{ background: headerColor, color: "white" }}>Modifier Dates</CModalHeader>
         <CModalBody>
           <CForm>
-            <CFormInput type="date" label="Début réel" value={editEmp.date_debut_reelle} onChange={e => setEditEmp({ ...editEmp, date_debut_reelle: e.target.value })} />
-            <CFormInput type="date" label="Fin réel" value={editEmp.date_fin_reelle} onChange={e => setEditEmp({ ...editEmp, date_fin_reelle: e.target.value })} />
+            <CFormInput 
+  type="date" 
+  label="Début réel" 
+  value={editEmp.date_debut_reelle}
+  onChange={e => {
+    const val = e.target.value;
+    setEditEmp(prev => ({
+      ...prev,
+      date_debut_reelle: val,
+      date_fin_reelle: prev.date_fin_reelle && prev.date_fin_reelle < val ? '' : prev.date_fin_reelle
+    }));
+  }}
+/>
+
+<CFormInput 
+  type="date" 
+  label="Fin réel" 
+  value={editEmp.date_fin_reelle}
+  min={editEmp.date_debut_reelle}
+  onChange={e => setEditEmp({ ...editEmp, date_fin_reelle: e.target.value })}
+/>
+
           </CForm>
         </CModalBody>
         <CModalFooter>

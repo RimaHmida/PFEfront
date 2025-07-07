@@ -38,15 +38,15 @@ const Login = () => {
       const data = await response.json()
 
       if (!response.ok) {
-        setError(data.message || 'Login failed')
+        setError(data.message || 'Connexion échouée')
       } else {
         localStorage.setItem('token', data.token)
         localStorage.setItem('user', JSON.stringify(data.user))
 
         const role = data.user.role
         switch (role) {
-          case 'administrateur':
           case 'administrateur_it':
+          case 'administrateur':
             navigate('/admin/dashboard')
             break
           case 'secretaire':
@@ -55,7 +55,7 @@ const Login = () => {
           case 'manager':
             navigate('/manager/presences')
             break
-          case 'agent paie':
+          case 'agent_paie':
             navigate('/paie/dashboard')
             break
           default:
@@ -80,7 +80,7 @@ const Login = () => {
 
                 <CForm onSubmit={handleLogin}>
                   <CInputGroup className="mb-3">
-                    <CInputGroupText className="bg-white text-secondary border-end-0">
+                    <CInputGroupText>
                       <CIcon icon={cilUser} />
                     </CInputGroupText>
                     <CFormInput
@@ -89,12 +89,11 @@ const Login = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
-                      style={{ borderLeft: '0' }}
                     />
                   </CInputGroup>
 
                   <CInputGroup className="mb-3">
-                    <CInputGroupText className="bg-white text-secondary border-end-0">
+                    <CInputGroupText>
                       <CIcon icon={cilLockLocked} />
                     </CInputGroupText>
                     <CFormInput
@@ -103,7 +102,6 @@ const Login = () => {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
-                      style={{ borderLeft: '0' }}
                     />
                   </CInputGroup>
 
@@ -113,14 +111,16 @@ const Login = () => {
                     color="primary"
                     type="submit"
                     className="w-100"
-                    style={{ borderRadius: '50px', fontWeight: '500', padding: '10px 0' }}
                     disabled={loading}
+                    style={{ borderRadius: '50px', fontWeight: '500' }}
                   >
                     {loading ? <CSpinner size="sm" /> : 'Se connecter'}
                   </CButton>
 
                   <div className="text-center mt-3">
-                    <small className="text-muted">Pas encore de compte ? <a href="#/register">Inscrivez-vous</a></small>
+                    <small className="text-muted">
+                      Vous n'avez pas de compte ? Contactez votre administrateur IT.
+                    </small>
                   </div>
                 </CForm>
               </CCardBody>

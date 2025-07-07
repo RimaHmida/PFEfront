@@ -67,11 +67,16 @@ const AdminConges = () => {
   }
 
   const handleSubmit = async () => {
+    if (form.date_debut && form.date_fin && form.date_fin < form.date_debut) {
+      toast.error("❌ La date de fin ne peut pas être antérieure à la date de début");
+      return;
+    }
     if ((form.type === 'maladie' || form.type === 'justifié') && !form.document && !editMode) {
       toast.error("Document obligatoire")
       return
     }
-
+  
+    
     const formData = new FormData()
     Object.entries(form).forEach(([k, v]) => v && formData.append(k, v))
 
