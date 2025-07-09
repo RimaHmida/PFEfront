@@ -117,7 +117,19 @@ const Login = () => {
                     {loading ? <CSpinner size="sm" /> : 'Se connecter'}
                   </CButton>
 
+                  {/* ✅ Lien mot de passe oublié */}
                   <div className="text-center mt-3">
+                    <CButton
+                      color="link"
+                      className="p-0"
+                      style={{ fontSize: '0.9rem' }}
+                      onClick={() => navigate('/forgot-password')}
+                    >
+                      Mot de passe oublié ?
+                    </CButton>
+                  </div>
+
+                  <div className="text-center mt-2">
                     <small className="text-muted">
                       Vous n'avez pas de compte ? Contactez votre administrateur IT.
                     </small>

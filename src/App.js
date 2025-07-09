@@ -7,6 +7,10 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./scss/examples.scss";
 import 'react-datepicker/dist/react-datepicker.css'
+import ForgotPassword from './views/pages/auth/ForgotPassword'
+import ResetPassword from './views/pages/auth/ResetPassword'
+import ChangePassword from './views/pages/auth/ChangePassword';
+import Profile from "./views/pages/auth/Profile";
 
 // Containers
 const DefaultLayout = React.lazy(() => import("./layouts/DefaultLayout"));
@@ -46,10 +50,26 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/404" element={<Page404 />} />
           <Route path="/500" element={<Page500 />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />   
 
-          {/* ✅ Route Paie Validations sécurisée */}
-     
-          {/* ✅ Default layout (toutes les autres routes protégées) */}
+       {/* ✅ Route protégée pour changer le mot de passe */}
+       <Route path="/changer-mot-de-passe" element={
+            <ProtectedRoute>
+              <ChangePassword />
+            </ProtectedRoute>
+          } />
+<Route
+  path="/profile"
+  element={
+    <ProtectedRoute>
+      <DefaultLayout>
+        <Profile />
+      </DefaultLayout>
+    </ProtectedRoute>
+  }
+/>
+          {/* ✅ Toutes les autres routes dans le layout principal */}
           <Route path="*" element={
             <ProtectedRoute>
               <DefaultLayout />
@@ -60,5 +80,4 @@ const App = () => {
     </HashRouter>
   );
 };
-
 export default App;
