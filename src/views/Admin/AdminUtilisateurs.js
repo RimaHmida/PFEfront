@@ -170,6 +170,31 @@ const AdminUtilisateurs = () => {
       toast.error('❌ Erreur réseau ou serveur.')
     }
   }
+//delete
+const handleDelete = async (id) => {
+  if (!window.confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?")) return;
+
+  try {
+    const res = await fetch(`http://localhost:8000/api/admin/users/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const result = await res.json();
+
+    if (!res.ok) {
+      toast.error(`❌ ${result.message || 'Erreur lors de la suppression.'}`);
+      return;
+    }
+
+    setUsers((prev) => prev.filter((u) => u.id !== id));
+    toast.success('✅ Utilisateur supprimé avec succès !');
+  } catch (err) {
+    toast.error('❌ Erreur réseau ou serveur lors de la suppression.');
+  }
+};
 
   if (loading) return <CSpinner color="primary" />
 

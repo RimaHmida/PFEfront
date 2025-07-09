@@ -16,6 +16,7 @@ const AdminEmployes = () => {
   const [selectedEmploye, setSelectedEmploye] = useState(null);
   const [expandedIds, setExpandedIds] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [formErrors, setFormErrors] = useState({});
 
   const [formData, setFormData] = useState({
     nom: "", prenom: "", email: "", numero: "",
@@ -79,8 +80,52 @@ const AdminEmployes = () => {
     setModalOpen(true);
   };
 
+
+  const validateField = (name, value) => {
+    const errors = { ...formErrors };
+  
+    switch (name) {
+      case 'nom':
+        if (!value.trim()) errors.nom = 'Le nom est requis.';
+        else delete errors.nom;
+        break;
+      case 'prenom':
+        if (!value.trim()) errors.prenom = 'Le prénom est requis.';
+        else delete errors.prenom;
+        break;
+      case 'email':
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) errors.email = 'Email invalide.';
+        else delete errors.email;
+        break;
+        case 'numero':
+          const numeroRegex = /^[0-9]{8,15}$/; // accepte uniquement chiffres, entre 8 et 15 chiffres
+          if (!numeroRegex.test(value)) {
+            errors.numero = 'Numéro invalide (chiffres uniquement, min 8 chiffres).';
+          } else {
+            delete errors.numero;
+          }
+          break;
+      case 'fonction':
+        if (!value.trim()) errors.fonction = 'La fonction est requise.';
+        else delete errors.fonction;
+        break;
+      case 'adresse':
+        if (!value.trim()) errors.adresse = 'L’adresse est requise.';
+        else delete errors.adresse;
+        break;
+      default:
+        break;
+    }
+  
+    setFormErrors(errors);
+  };
+  
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    validateField(name, value); // ✅ Appelle validation
   };
 
   const handleSubmit = async () => {
@@ -223,18 +268,72 @@ const AdminEmployes = () => {
         </CModalHeader>
         <CModalBody>
           <CForm>
-            <CFormInput name="nom" label="Nom" value={formData.nom} onChange={handleChange} className="mb-2" />
-            <CFormInput name="prenom" label="Prénom" value={formData.prenom} onChange={handleChange} className="mb-2" />
-            <CFormInput name="email" label="Email" value={formData.email} onChange={handleChange} className="mb-2" />
-            <CFormInput name="numero" label="Téléphone" value={formData.numero} onChange={handleChange} className="mb-2" />
-            <CFormInput name="fonction" label="Fonction" value={formData.fonction} onChange={handleChange} className="mb-2" />
-            <CFormInput name="adresse" label="Adresse" value={formData.adresse} onChange={handleChange} className="mb-2" />
-            <CFormSelect name="statut" label="Statut" value={formData.statut} onChange={handleChange}>
-              <option value="travail">Travail</option>
-              <option value="récupération">Récupération</option>
-              <option value="congé">Congé</option>
-              <option value="standby">Standby</option>
-            </CFormSelect>
+          <CFormInput
+  name="nom"
+  label="Nom"
+  value={formData.nom}
+  onChange={handleChange}
+  className="mb-2"
+/>
+{formErrors.nom && <div className="text-danger mb-2">{formErrors.nom}</div>}
+
+<CFormInput
+  name="prenom"
+  label="Prénom"
+  value={formData.prenom}
+  onChange={handleChange}
+  className="mb-2"
+/>
+{formErrors.prenom && <div className="text-danger mb-2">{formErrors.prenom}</div>}
+
+<CFormInput
+  name="email"
+  label="Email"
+  value={formData.email}
+  onChange={handleChange}
+  className="mb-2"
+/>
+{formErrors.email && <div className="text-danger mb-2">{formErrors.email}</div>}
+<CFormInput
+  type="tel"
+  name="numero"
+  label="Téléphone"
+  value={formData.numero}
+  onChange={handleChange}
+  className="mb-2"
+/>
+{formErrors.numero && <div className="text-danger mb-2">{formErrors.numero}</div>}
+
+<CFormInput
+  name="fonction"
+  label="Fonction"
+  value={formData.fonction}
+  onChange={handleChange}
+  className="mb-2"
+/>
+{formErrors.fonction && <div className="text-danger mb-2">{formErrors.fonction}</div>}
+
+<CFormInput
+  name="adresse"
+  label="Adresse"
+  value={formData.adresse}
+  onChange={handleChange}
+  className="mb-2"
+/>
+{formErrors.adresse && <div className="text-danger mb-2">{formErrors.adresse}</div>}
+
+<CFormSelect
+  name="statut"
+  label="Statut"
+  value={formData.statut}
+  onChange={handleChange}
+>
+  <option value="travail">Travail</option>
+  <option value="récupération">Récupération</option>
+  <option value="congé">Congé</option>
+  <option value="standby">Standby</option>
+</CFormSelect>
+
           </CForm>
         </CModalBody>
         <CModalFooter>
