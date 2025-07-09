@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import {
   CCard, CCardBody, CCardHeader, CForm, CFormInput, CButton,
-  CRow, CCol, CFormLabel, CSpinner, CAvatar
+  CRow, CCol, CFormLabel, CSpinner, CAvatar,
 } from '@coreui/react'
 import { toast } from 'react-toastify'
-import axios from 'axios'
 
 const Profile = () => {
   const [user, setUser] = useState(null)
@@ -18,17 +17,21 @@ const Profile = () => {
 
   const fetchUser = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/me', {
+      const response = await fetch('http://localhost:8000/api/profile', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       })
 
-      setUser(res.data.user)
+      const result = await response.json()
+
+      if (!response.ok) throw new Error('Erreur lors du chargement')
+
+      setUser(result.user)
       setFormData({
-        nom: res.data.user.nom,
-        prenom: res.data.user.prenom,
-        email: res.data.user.email,
+        nom: result.user.nom,
+        prenom: result.user.prenom,
+        email: result.user.email,
         photo: null,
       })
     } catch (err) {
@@ -53,6 +56,7 @@ const Profile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
     const data = new FormData()
     data.append('nom', formData.nom)
     data.append('prenom', formData.prenom)
@@ -62,16 +66,30 @@ const Profile = () => {
     }
 
     try {
-      await axios.post('http://localhost:8000/api/profile/update', data, {
+      const response = await fetch('http://localhost:8000/api/profile/update', {
+        method: 'POST',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'multipart/form-data',
         },
+        body: data,
       })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        toast.error('❌ Erreur lors de la mise à jour du profil.')
+        return
+      }
+
       toast.success('✅ Profil mis à jour.')
-      fetchUser()
-    } catch (err) {
-      toast.error('❌ Erreur lors de la mise à jour du profil.')
+      setUser(result.user)
+      setFormData((prev) => ({ ...prev, photo: null }))
+
+      // ✅ Met à jour localStorage et déclenche un événement
+      localStorage.setItem('user', JSON.stringify(result.user))
+      window.dispatchEvent(new Event('user-updated'))
+    } catch (error) {
+      toast.error('❌ Une erreur est survenue.')
     }
   }
 
@@ -91,7 +109,11 @@ const Profile = () => {
           <CCardBody>
             <div className="text-center mb-4">
               <CAvatar
-                src={user?.photo_url || 'https://ui-avatars.com/api/?name=' + user?.prenom + '+' + user?.nom}
+                src={
+                  formData.photo
+                    ? URL.createObjectURL(formData.photo)
+                    : `${user?.profile_image_url}?t=${Date.now()}`
+                }
                 size="xxl"
               />
             </div>

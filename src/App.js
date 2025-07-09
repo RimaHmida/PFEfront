@@ -10,7 +10,6 @@ import 'react-datepicker/dist/react-datepicker.css'
 import ForgotPassword from './views/pages/auth/ForgotPassword'
 import ResetPassword from './views/pages/auth/ResetPassword'
 import ChangePassword from './views/pages/auth/ChangePassword';
-import Profile from "./views/pages/auth/Profile";
 
 // Containers
 const DefaultLayout = React.lazy(() => import("./layouts/DefaultLayout"));
@@ -59,16 +58,8 @@ const App = () => {
               <ChangePassword />
             </ProtectedRoute>
           } />
-<Route
-  path="/profile"
-  element={
-    <ProtectedRoute>
-      <DefaultLayout>
-        <Profile />
-      </DefaultLayout>
-    </ProtectedRoute>
-  }
-/>
+
+
           {/* ✅ Toutes les autres routes dans le layout principal */}
           <Route path="*" element={
             <ProtectedRoute>

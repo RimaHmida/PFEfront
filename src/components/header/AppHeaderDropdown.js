@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   CAvatar,
   CDropdown,
@@ -8,21 +8,30 @@ import {
   CDropdownMenu,
   CDropdownToggle,
 } from '@coreui/react'
-import {
-  cilLockLocked,
-  cilUser,
-} from '@coreui/icons'
+import { cilLockLocked, cilUser } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { useNavigate } from 'react-router-dom'
 
-// 🔄 Image par défaut
 import defaultAvatar from './../../assets/images/avatars/8.jpg'
 
 const AppHeaderDropdown = () => {
   const navigate = useNavigate()
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || {})
+  const photoUrl = user?.profile_image_url || defaultAvatar
 
-  const user = JSON.parse(localStorage.getItem('user'))
-  const photoUrl = user?.photo_url || defaultAvatar
+  // Listen for changes in localStorage via a custom event
+  useEffect(() => {
+    const handleUserUpdate = () => {
+      const updatedUser = JSON.parse(localStorage.getItem('user')) || {}
+      setUser(updatedUser)
+    }
+
+    window.addEventListener('user-updated', handleUserUpdate)
+
+    return () => {
+      window.removeEventListener('user-updated', handleUserUpdate)
+    }
+  }, [])
 
   const handleLogout = () => {
     localStorage.removeItem('token')

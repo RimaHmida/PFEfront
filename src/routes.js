@@ -10,6 +10,7 @@ import ManagerPresenceValidation from './views/Manager/ManagerPresenceValidation
 import AdminDashboard from './views/Admin/AdminDashboard'
 import Dashboard from './views/dashboard/Dashboard'
 import PaieValidations from './views/Paie/PaieValidations';
+import Profile from './views/pages/auth/Profile'
 
 // Base
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
@@ -75,6 +76,12 @@ const routes = [
   { path: '/secretaire/presences', name: 'Présence Journalière', element: SecretairePresence },
   { path: '/manager/presences', name: 'Validation des Présences', element: ManagerPresenceValidation },
 
+  //profile
+  {
+    path: '/profile',
+    name: 'Mon profil',
+    element: Profile,
+  },
   // Base
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
