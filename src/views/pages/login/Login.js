@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+
 import {
   CButton,
   CCard,
@@ -22,6 +23,30 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
+  // ✅ New states for rate limiting
+  const [retryAfter, setRetryAfter] = useState(null)
+  const [countdown, setCountdown] = useState(null)
+//
+ // ✅ Countdown effect
+ useEffect(() => {
+  let timer
+  if (retryAfter !== null) {
+    setCountdown(retryAfter)
+    timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev === 1) {
+          clearInterval(timer)
+          setRetryAfter(null)
+          return null
+        }
+        return prev - 1
+      })
+    }, 1000)
+  }
+
+  return () => clearInterval(timer)
+}, [retryAfter])
+
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -38,7 +63,15 @@ const Login = () => {
       const data = await response.json()
 
       if (!response.ok) {
-        setError(data.message || 'Connexion échouée')
+        // ✅ Handle Laravel rate limit error (429)
+        if (response.status === 429 && data.message.includes('Réessayez dans')) {
+          const seconds = parseInt(data.message.match(/\d+/)?.[0] || '60')
+          setRetryAfter(seconds)
+          setCountdown(seconds)
+          setError(data.message)
+        } else {
+          setError(data.message || 'Connexion échouée')
+        }
       } else {
         localStorage.setItem('token', data.token)
         localStorage.setItem('user', JSON.stringify(data.user))
@@ -107,14 +140,21 @@ const Login = () => {
 
                   {error && <div className="text-danger mb-3 text-center">{error}</div>}
 
-                  <CButton
+                    {/* ✅ Disabled if countdown is active */}
+                    <CButton
                     color="primary"
                     type="submit"
                     className="w-100"
-                    disabled={loading}
+                    disabled={loading || countdown !== null}
                     style={{ borderRadius: '50px', fontWeight: '500' }}
                   >
-                    {loading ? <CSpinner size="sm" /> : 'Se connecter'}
+                    {loading ? (
+                      <CSpinner size="sm" />
+                    ) : countdown !== null ? (
+                      `Réessayez dans ${countdown}s`
+                    ) : (
+                      'Se connecter'
+                    )}
                   </CButton>
 
                   {/* ✅ Lien mot de passe oublié */}
