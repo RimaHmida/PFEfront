@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from "react";
-import { HashRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { CSpinner, useColorModes } from "@coreui/react";
 import "./scss/style.scss"; 
@@ -40,7 +40,7 @@ const App = () => {
   }, []);
 
   return (
-    <HashRouter>
+<Router>
       <ToastContainer position="top-right" autoClose={3000} theme="colored" />
       <Suspense fallback={<CSpinner color="primary" variant="grow" />}>
         <Routes>
@@ -68,7 +68,7 @@ const App = () => {
           } />
         </Routes>
       </Suspense>
-    </HashRouter>
+    </Router>
   );
 };
 export default App;

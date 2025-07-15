@@ -9,8 +9,9 @@ import SecretairePresence from './views/secretaire/SecretairePresence'
 import ManagerPresenceValidation from './views/Manager/ManagerPresenceValidation'
 import AdminDashboard from './views/Admin/AdminDashboard'
 import Dashboard from './views/dashboard/Dashboard'
-import PaieValidations from './views/Paie/PaieValidations';
+import PaieValidations from './views/Paie/PaieValidations'
 import Profile from './views/pages/auth/Profile'
+import AdminLoginLogs from './views/Admin/AdminLoginLogs'
 
 // Base
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
@@ -71,6 +72,7 @@ const routes = [
   { path: '/admin/affectations', name: 'Gestion des Affectations', element: AdminAffectations },
   { path: '/admin/conges', name: 'Gestion des Congés', element: AdminConges },
   { path: '/admin/historique-conges', name: 'Historique des Congés', element: AdminHistoriqueConges },
+  { path: '/admin/logs', name: 'Logs de Connexion', element: AdminLoginLogs },
 
   // Manager & Secretaire
   { path: '/secretaire/presences', name: 'Présence Journalière', element: SecretairePresence },

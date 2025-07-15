@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import {
   CCard,
   CCardBody,
@@ -35,7 +37,9 @@ const AdminUtilisateurs = () => {
   const [fieldErrors, setFieldErrors] = useState({})
 
   const token = localStorage.getItem('token')
-
+  const user = JSON.parse(localStorage.getItem('user'))
+  const isAdminIT = user?.role === 'administrateur_it'
+  const navigate = useNavigate()
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -203,6 +207,18 @@ const handleDelete = async (id) => {
       <div style={{ background: "#1E3A8A", padding: "16px", borderRadius: "8px", color: "white", marginBottom: "24px" }}>
         <h3 style={{ margin: 0 }}>Gestion des Utilisateurs</h3>
       </div>
+      {isAdminIT && (
+  <div className="mb-3 d-flex justify-content-end">
+     <CButton
+  color="info"
+  variant="outline"
+  onClick={() => navigate('/admin/logs')}
+>
+  🔍 Voir les logs de connexion
+</CButton>
+
+  </div>
+)}
 
       <CRow>
         {users.map((user) => (
