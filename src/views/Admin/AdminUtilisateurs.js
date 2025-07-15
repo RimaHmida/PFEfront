@@ -210,27 +210,27 @@ const handleDelete = async (id) => {
       <div style={{ background: "#1E3A8A", padding: "16px", borderRadius: "8px", color: "white", marginBottom: "24px" }}>
         <h3 style={{ margin: 0 }}>Gestion des Utilisateurs</h3>
       </div>
+      <div className="mb-3 d-flex justify-content-between align-items-end flex-wrap gap-3">
+  <CFormInput
+    type="text"
+    placeholder="🔍 Rechercher par nom, email, rôle..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    style={{ maxWidth: '300px' }}
+  />
+  
+  {isAdminIT && (
+    <CButton
+      color="info"
+      variant="outline"
+      onClick={() => navigate('/admin/logs')}
+    >
+      🔍 Voir les logs de connexion
+    </CButton>
+  )}
+</div>
 
-      {isAdminIT && (
-  <div className="mb-3 d-flex justify-content-end">
-     <CButton
-  color="info"
-  variant="outline"
-  onClick={() => navigate('/admin/logs')}
->
-  🔍 Voir les logs de connexion
-</CButton>
-<CFormInput
-  type="text"
-  placeholder="🔍 Rechercher "
-  value={search}
-  onChange={(e) => setSearch(e.target.value)}
-  className="my-3"
-  style={{ maxWidth: '300px' }}
-/>
 
-  </div>
-)}
 
       <CRow>
       {users
