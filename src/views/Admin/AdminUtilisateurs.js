@@ -35,7 +35,10 @@ const AdminUtilisateurs = () => {
     role: 'manager',
   })
   const [fieldErrors, setFieldErrors] = useState({})
-
+  const [search, setSearch] = useState('')
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+  
   const token = localStorage.getItem('token')
   const user = JSON.parse(localStorage.getItem('user'))
   const isAdminIT = user?.role === 'administrateur_it'
@@ -207,6 +210,7 @@ const handleDelete = async (id) => {
       <div style={{ background: "#1E3A8A", padding: "16px", borderRadius: "8px", color: "white", marginBottom: "24px" }}>
         <h3 style={{ margin: 0 }}>Gestion des Utilisateurs</h3>
       </div>
+
       {isAdminIT && (
   <div className="mb-3 d-flex justify-content-end">
      <CButton
@@ -216,12 +220,25 @@ const handleDelete = async (id) => {
 >
   🔍 Voir les logs de connexion
 </CButton>
+<CFormInput
+  type="text"
+  placeholder="🔍 Rechercher "
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  className="my-3"
+  style={{ maxWidth: '300px' }}
+/>
 
   </div>
 )}
 
       <CRow>
-        {users.map((user) => (
+      {users
+  .filter((user) => {
+    const fullText = `${user.nom} ${user.prenom} ${user.email} ${user.role}`.toLowerCase()
+    return fullText.includes(search.toLowerCase())
+  })
+  .map((user) => (
           <CCol key={user.id} md={6} xl={4}>
             <CCard className="mb-4" style={{ border: `1px solid #E5E7EB`, backgroundColor: "#FFFFFF", borderRadius: "8px", boxShadow: "0 4px 8px rgba(0,0,0,0.05)" }}>
               <CCardHeader style={{ background: "#1E3A8A", color: "#fff", fontWeight: "bold" }}>

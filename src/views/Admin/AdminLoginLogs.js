@@ -48,32 +48,57 @@ const AdminLoginLogs = () => {
           <div className="text-center"><CSpinner color="primary" /></div>
         ) : (
           <CTable hover responsive bordered>
-            <CTableHead color="light">
-              <CTableRow>
-                <CTableHeaderCell>#</CTableHeaderCell>
-                <CTableHeaderCell>Nom</CTableHeaderCell>
-                <CTableHeaderCell>Email</CTableHeaderCell>
-                <CTableHeaderCell>Adresse IP</CTableHeaderCell>
-                <CTableHeaderCell>Appareil</CTableHeaderCell>
-                <CTableHeaderCell>Date</CTableHeaderCell>
-              </CTableRow>
-            </CTableHead>
+           <CTableHead color="light">
+  <CTableRow>
+    <CTableHeaderCell>#</CTableHeaderCell>
+    <CTableHeaderCell>Nom</CTableHeaderCell>
+    <CTableHeaderCell>Email</CTableHeaderCell>
+    <CTableHeaderCell>Adresse IP</CTableHeaderCell>
+    <CTableHeaderCell>Appareil</CTableHeaderCell>
+    <CTableHeaderCell>Date</CTableHeaderCell>
+    <CTableHeaderCell>Statut</CTableHeaderCell>
+    <CTableHeaderCell>Message</CTableHeaderCell>
+  </CTableRow>
+</CTableHead>
+
             <CTableBody>
               {logs.map((log, index) => (
                 <CTableRow key={log.id}>
                   <CTableHeaderCell>{index + 1}</CTableHeaderCell>
-                  <CTableDataCell>{log.user.nom} {log.user.prenom}</CTableDataCell>
-                  <CTableDataCell><CBadge color="info">{log.user.email}</CBadge></CTableDataCell>
+                  <CTableDataCell>
+                    {log.user ? `${log.user.nom} ${log.user.prenom}` : 'Utilisateur inconnu'}
+                  </CTableDataCell>
+
+                  <CTableDataCell>
+                    <CBadge color="info">
+                      {log.user ? log.user.email : log.email}
+                    </CBadge>
+                  </CTableDataCell>
+
                   <CTableDataCell>{log.ip_address}</CTableDataCell>
+
                   <CTableDataCell>
                     <small>{log.user_agent.substring(0, 40)}...</small>
                   </CTableDataCell>
+
                   <CTableDataCell>{new Date(log.created_at).toLocaleString()}</CTableDataCell>
+
+                   {/* ✅ Nouveau statut */}
+                  <CTableDataCell>
+                   {log.status === 'success' ? (
+                <CBadge color="success">🟢 Succès</CBadge>
+                ) : (
+               <CBadge color="danger">❌ Échec</CBadge>
+                 )}
+                 </CTableDataCell>
+
+              {/* ✅ Nouveau message */}
+                <CTableDataCell>{log.message || '—'}</CTableDataCell>
                 </CTableRow>
-              ))}
-            </CTableBody>
-          </CTable>
-        )}
+                ))}
+                </CTableBody>
+               </CTable>
+               )}
       </CCardBody>
     </CCard>
   )
