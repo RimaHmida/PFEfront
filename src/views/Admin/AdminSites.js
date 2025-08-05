@@ -344,7 +344,7 @@ const AdminSitesInner = () => {
                       alt={`Image du site ${site.nomsite}`}
                       style={{
                         width: "100%",
-                        height: "350px",
+                        height: "300px",
                         objectFit: "contain",
                         backgroundColor: "#f7f9fb",
                         borderTopLeftRadius: cardBorderRadius,

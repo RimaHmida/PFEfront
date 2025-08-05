@@ -11,7 +11,6 @@ import {
   CCol,
   CFormLabel,
   CSpinner,
-  CAvatar,
   CContainer,
   CAlert,
 } from "@coreui/react"
@@ -265,29 +264,48 @@ const Profile = () => {
 
   return (
     <CContainer className="py-4">
-  <CRow className="justify-content-center">
-    <CCol xs={12} sm={10} md={8} lg={6} xl={5}>
+      <CRow className="justify-content-center">
+        <CCol xs={12} sm={10} md={8} lg={6} xl={5}>
           <CCard className="shadow border-0 rounded-4 p-4">
             <CCardHeader className="text-center bg-transparent border-0 mb-4">
               <h2 style={{ color: primaryColor }}>Mon Profil</h2>
-              <p className="text-muted mb-0"></p>
             </CCardHeader>
             <CCardBody>
               <div className="text-center mb-4">
                 {profileImageUrl && !imageError ? (
-                  <CAvatar
-                    src={profileImageUrl}
-                    size="xxl"
+                  <div
                     style={{
-                      width: "120px", height: "120px", border: `3px solid ${primaryColor}`
+                      width: "120px",
+                      height: "120px",
+                      borderRadius: "50%",
+                      overflow: "hidden",
+                      border: `3px solid ${primaryColor}`,
+                      display: "inline-block",
+                      margin: "0 auto",
                     }}
-                    onError={() => setImageError(true)}
-                  />
+                  >
+                    <img
+                      src={profileImageUrl}
+                      alt="Profile"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        display: "block",
+                      }}
+                      onError={() => setImageError(true)}
+                    />
+                  </div>
                 ) : (
                   <div
                     className="d-flex align-items-center justify-content-center rounded-circle"
                     style={{
-                      width: "120px", height: "120px", background: primaryColor, color: "#fff", fontSize: "2rem"
+                      width: "120px",
+                      height: "120px",
+                      background: primaryColor,
+                      color: "#fff",
+                      fontSize: "2rem",
+                      margin: "0 auto",
                     }}
                   >
                     {getUserInitials()}
