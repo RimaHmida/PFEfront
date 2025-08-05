@@ -1,0 +1,33 @@
+/* SidebarThemeToggle.css */
+.sidebar-theme-toggle {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 0.75rem;
+  background-color: #bf0a30; /* Rouge par défaut */
+  margin: 0.25rem 0;
+  transition: background-color 0.2s;
+}
+
+.sidebar-theme-toggle:hover {
+  background-color: #a30827;
+}
+
+.sidebar-theme-toggle .nav-icon {
+  margin-right: 0.75rem;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Sidebar minimisée */
+.sidebar-minimized .sidebar-theme-toggle .nav-label {
+  display: none !important;
+}
+
+.sidebar-minimized .sidebar-theme-toggle {
+  justify-content: center !important;
+}

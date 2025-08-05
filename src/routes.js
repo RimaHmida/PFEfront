@@ -12,6 +12,8 @@ import Dashboard from './views/dashboard/Dashboard'
 import PaieValidations from './views/Paie/PaieValidations'
 import Profile from './views/pages/auth/Profile'
 import AdminLoginLogs from './views/Admin/AdminLoginLogs'
+import AdminItDashboard from './views/Admin/AdminItDashboard'
+import ChangePassword from './views/pages/auth/ChangePassword'
 
 // Base
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
@@ -31,6 +33,7 @@ const Spinners = React.lazy(() => import('./views/base/spinners/Spinners'))
 const Tabs = React.lazy(() => import('./views/base/tabs/Tabs'))
 const Tables = React.lazy(() => import('./views/base/tables/Tables'))
 const Tooltips = React.lazy(() => import('./views/base/tooltips/Tooltips'))
+//admin
 
 // Buttons
 const Buttons = React.lazy(() => import('./views/buttons/buttons/Buttons'))
@@ -59,6 +62,7 @@ const Modals = React.lazy(() => import('./views/notifications/modals/Modals'))
 const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 
 // Widgets
+
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const routes = [
@@ -74,6 +78,11 @@ const routes = [
   { path: '/admin/historique-conges', name: 'Historique des Congés', element: AdminHistoriqueConges },
   { path: '/admin/logs', name: 'Logs de Connexion', element: AdminLoginLogs },
 
+
+  { path: '/dashboard', exact: true, name: 'Dashboard', element: Dashboard },
+  { path: '/admin/dashboard', exact: true, name: 'Dashboard Admin', element: AdminDashboard },
+  { path: '/adminit/dashboard', name: 'Dashboard Admin IT', element: AdminItDashboard },
+
   // Manager & Secretaire
   { path: '/secretaire/presences', name: 'Présence Journalière', element: SecretairePresence },
   { path: '/manager/presences', name: 'Validation des Présences', element: ManagerPresenceValidation },
@@ -83,6 +92,12 @@ const routes = [
     path: '/profile',
     name: 'Mon profil',
     element: Profile,
+  },
+  //mdp
+  {
+    path: '/changer-mot-de-passe',
+    name: 'Changer le mot de passe',
+    element: ChangePassword,
   },
   // Base
   { path: '/theme', name: 'Theme', element: Colors, exact: true },

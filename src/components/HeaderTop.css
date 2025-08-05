@@ -1,0 +1,59 @@
+/* HeaderTop.css */
+
+/* TOP BAR STYLING */
+.app-header-top {
+  height: 75px; /* 🔁 Moderately increased */
+  padding: 10px 20px;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+  position: relative;
+  z-index: 1100;
+}
+
+/* LOGOS */
+.logo-ctf {
+  height: 55px; /* 🔁 Medium size */
+  object-fit: contain;
+}
+
+.logo-ministere {
+  height: 35px; /* 🔁 Medium size */
+  object-fit: contain;
+}
+
+/* SOCIALS */
+.social-icons-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.social-link:hover {
+  background-color: #f0f2f5;
+  transform: translateY(-1px);
+}
+
+.social-icon {
+  height: 22px;
+  width: 22px;
+  object-fit: contain;
+  transition: filter 0.2s ease-in-out;
+}
+
+.social-link:hover .social-icon {
+  filter: brightness(0.9);
+}

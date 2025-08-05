@@ -1,0 +1,46 @@
+.c-sidebar {
+  background-color: #1F2937 !important; /* Dark slate gray */
+  color: #D1D5DB; /* Light gray */
+}
+
+.c-sidebar .nav-link {
+  color: #D1D5DB !important; /* Soft light gray */
+  font-weight: 500;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.c-sidebar .nav-link:hover {
+  background-color: transparent !important; /* Keep no background on hover */
+  color: #3B82F6 !important; /* Bright blue accent */
+}
+
+.c-sidebar .nav-link.active {
+  background-color: #2563EB !important; /* Slightly darker blue */
+  font-weight: bold;
+  color: #FFFFFF !important; /* White text for active */
+}
+
+.c-sidebar .nav-icon {
+  color: #9CA3AF !important; /* Medium gray icons */
+  transition: color 0.3s ease;
+}
+
+.c-sidebar .nav-link:hover .nav-icon {
+  color: #3B82F6 !important; /* Icon turns blue on hover */
+}
+
+.c-sidebar .c-sidebar-nav-title {
+  color: #6B7280; /* Gray for section titles */
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 1rem;
+  margin-left: 0.5rem;
+  font-weight: 600;
+}
+
+.c-sidebar .theme-toggle {
+  margin-top: auto;
+  padding: 1rem;
+  border-top: 1px solid #374151;
+}

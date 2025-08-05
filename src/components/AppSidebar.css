@@ -1,0 +1,57 @@
+/* 🧱 Structure du conteneur identique aux autres éléments */
+.sidebar-theme-toggle-wrapper {
+  width: 100%;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+}
+
+/* 🎯 Bouton identique aux autres, bleu par défaut */
+.sidebar-theme-toggle-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 0.75rem;
+  background-color: transparent;
+  color: #ffffff;
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  transition: background-color 0.2s;
+}
+
+/* 🔁 Hover comme les autres */
+.sidebar-theme-toggle-btn:hover {
+  background-color: #C8102E !important;
+  color: white !important;
+}
+
+/* ✅ Active uniquement quand le menu est ouvert */
+.sidebar-theme-toggle-wrapper.active .sidebar-theme-toggle-btn {
+  background-color: #C8102E !important;
+  color: white !important;
+  font-weight: bold;
+}
+
+/* 🎯 Icône alignée */
+.sidebar-theme-toggle-btn .nav-icon {
+  margin-right: 0.75rem;
+}
+
+/* ✅ Cacher texte en sidebar réduite */
+.sidebar-minimized .sidebar-theme-toggle-btn .nav-label {
+  display: none;
+}
+
+.sidebar-minimized .sidebar-theme-toggle-btn {
+  justify-content: center;
+}
+/* ✅ Forcer le menu à s'afficher par-dessus la sidebar */
+.sidebar-theme-toggle-wrapper .dropdown-menu {
+  z-index: 2000 !important;
+  position: absolute !important;
+  inset: auto !important;
+  left: 100% !important; /* affiche le menu à droite */
+  top: 0 !important;
+  transform: none !important;
+  min-width: 12rem;
+}

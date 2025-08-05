@@ -1,0 +1,46 @@
+/* Main layout adjustments for fixed header and sidebar */
+.main-content {
+  margin-top: 65px; /* Account for fixed header */
+  margin-left: var(--cui-sidebar-width, 256px); /* Account for sidebar */
+  min-height: calc(100vh - 65px);
+  transition: margin-left 0.15s ease-in-out; /* Smooth transition */
+  padding: 20px; /* Add some padding */
+}
+
+/* When sidebar is minimized */
+.sidebar-minimized .main-content,
+.c-sidebar-minimized .main-content {
+  margin-left: var(--cui-sidebar-minimized-width, 56px) !important;
+}
+
+.sidebar-container {
+  top: 65px; /* Position sidebar below header */
+  height: calc(100vh - 65px);
+  z-index: 1040; /* Below header but above content */
+}
+
+/* Mobile adjustments */
+@media (max-width: 991.98px) {
+  .main-content {
+    margin-top: 0; /* No margin on mobile since header is not fixed */
+    margin-left: 0 !important; /* No sidebar margin on mobile */
+    min-height: 100vh;
+  }
+
+  .sidebar-container {
+    top: 0;
+    height: 100vh;
+  }
+}
+
+/* Ensure content doesn't get hidden behind sidebar */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Add CSS variables for sidebar widths */
+:root {
+  --cui-sidebar-width: 256px;
+  --cui-sidebar-minimized-width: 56px;
+}

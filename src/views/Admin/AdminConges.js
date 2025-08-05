@@ -174,7 +174,6 @@ const AdminConges = () => {
               <option value=''>-- Choisir --</option>
               <option value='maladie'>Maladie</option>
               <option value='justifié'>Justifié</option>
-              <option value='non justifié'>Non justifié</option>
             </CFormSelect>
 
             <label className="form-label mt-2">Date début</label>

@@ -8,6 +8,7 @@ import {
   cilAddressBook,
   cilClipboard,
   cilPeople,
+  cilContrast,
 } from '@coreui/icons'
 import { CNavItem, CNavTitle } from '@coreui/react'
 
@@ -24,75 +25,73 @@ export function getNav(role) {
   ]
 
   let roleBased = []
-//
-if (role === 'administrateur_it') {
-  roleBased = [
-    {
-      component: CNavItem,
-      name: 'Gestion des Employés',
-      to: '/admin/employes',
-      icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
-    },
-    {
-      component: CNavItem,
-      name: 'Gestion des Sites',
-      to: '/admin/sites',
-      icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
-    },
-    {
-      component: CNavItem,
-      name: 'Affectations',
-      to: '/admin/affectations',
-      icon: <CIcon icon={cilClipboard} customClassName="nav-icon" />,
-    },
-    {
-      component: CNavItem,
-      name: 'Utilisateurs',
-      to: '/admin/users',
-      icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
-    },
-    {
-      component: CNavItem,
-      name: 'Présence Journalière',
-      to: '/secretaire/presences',
-      icon: <CIcon icon={cilBell} customClassName="nav-icon" />,
-    },
-    {
-      component: CNavItem,
-      name: 'Validation des Présences',
-      to: '/manager/presences',
-      icon: <CIcon icon={cilClipboard} customClassName="nav-icon" />,
-    },
-    {
-      component: CNavItem,
-      name: 'Consultation Paie',
-      to: '/paie/validations',
-      icon: <CIcon icon={cilClipboard} customClassName="nav-icon" />,
-    },
-  ]
-} else if (role === 'administrateur') {
-  roleBased = [
-    {
-      component: CNavItem,
-      name: 'Gestion des Employés',
-      to: '/admin/employes',
-      icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
-    },
-    {
-      component: CNavItem,
-      name: 'Gestion des Sites',
-      to: '/admin/sites',
-      icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
-    },
-    {
-      component: CNavItem,
-      name: 'Affectations',
-      to: '/admin/affectations',
-      icon: <CIcon icon={cilClipboard} customClassName="nav-icon" />,
-    },
-   
-  ]
 
+  if (role === 'administrateur_it') {
+    roleBased = [
+      {
+        component: CNavItem,
+        name: 'Gestion des Employés',
+        to: '/admin/employes',
+        icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'Gestion des Sites',
+        to: '/admin/sites',
+        icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'Affectations',
+        to: '/admin/affectations',
+        icon: <CIcon icon={cilClipboard} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'Utilisateurs',
+        to: '/admin/users',
+        icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'Présence Journalière',
+        to: '/secretaire/presences',
+        icon: <CIcon icon={cilBell} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'Validation des Présences',
+        to: '/manager/presences',
+        icon: <CIcon icon={cilClipboard} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'Consultation Paie',
+        to: '/paie/validations',
+        icon: <CIcon icon={cilClipboard} customClassName="nav-icon" />,
+      },
+    ]
+  } else if (role === 'administrateur') {
+    roleBased = [
+      {
+        component: CNavItem,
+        name: 'Gestion des Employés',
+        to: '/admin/employes',
+        icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'Gestion des Sites',
+        to: '/admin/sites',
+        icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
+      },
+      {
+        component: CNavItem,
+        name: 'Affectations',
+        to: '/admin/affectations',
+        icon: <CIcon icon={cilClipboard} customClassName="nav-icon" />,
+      },
+    ]
   } else if (role === 'manager') {
     roleBased = [
       {
@@ -117,17 +116,17 @@ if (role === 'administrateur_it') {
         icon: <CIcon icon={cilBell} customClassName="nav-icon" />,
       },
     ]
-  }
-  else if (role === 'paie') {
+  } else if (role === 'paie') {
     roleBased = [
       {
         component: CNavItem,
         name: 'Validations',
         to: '/paie/validations',
         icon: <CIcon icon={cilClipboard} customClassName="nav-icon" />,
-      }
+      },
     ]
   }
+
   return [
     ...common,
     {
@@ -135,5 +134,10 @@ if (role === 'administrateur_it') {
       name: 'Fonctionnalités',
     },
     ...roleBased,
+    {
+      custom: 'theme', // Special flag for toggle
+      name: 'Thème',
+      icon: <CIcon icon={cilContrast} customClassName="nav-icon" />,
+    },
   ]
 }

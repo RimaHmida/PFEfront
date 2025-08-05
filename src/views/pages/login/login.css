@@ -1,0 +1,18 @@
+.login-video-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  
+  .login-video-iframe {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    border: none;
+  }
+  

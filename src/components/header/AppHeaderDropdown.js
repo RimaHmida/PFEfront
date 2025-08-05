@@ -8,7 +8,7 @@ import {
   CDropdownMenu,
   CDropdownToggle,
 } from '@coreui/react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
+import { cilLockLocked, cilUser, cilAccountLogout } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { useNavigate } from 'react-router-dom'
 
@@ -17,9 +17,12 @@ import defaultAvatar from './../../assets/images/avatars/8.jpg'
 const AppHeaderDropdown = () => {
   const navigate = useNavigate()
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || {})
-  const photoUrl = user?.profile_image_url || defaultAvatar
+  const [visible, setVisible] = useState(false)
 
-  // Listen for changes in localStorage via a custom event
+  const photoUrl = user?.photo
+    ? `http://localhost:8000/${user.photo.replace(/^\/+/, '')}`
+    : defaultAvatar
+
   useEffect(() => {
     const handleUserUpdate = () => {
       const updatedUser = JSON.parse(localStorage.getItem('user')) || {}
@@ -27,31 +30,37 @@ const AppHeaderDropdown = () => {
     }
 
     window.addEventListener('user-updated', handleUserUpdate)
-
     return () => {
       window.removeEventListener('user-updated', handleUserUpdate)
     }
   }, [])
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
+    localStorage.clear()
     navigate('/login')
   }
 
   return (
-    <CDropdown variant="nav-item">
-      <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
+    <CDropdown
+      className="mx-2"
+      placement="bottom-end"
+      visible={visible}
+      onVisibleChange={(val) => {
+        // prevent double render glitch
+        if (val !== visible) setVisible(val)
+      }}
+    >
+      <CDropdownToggle caret={false} className="py-0">
         <CAvatar src={photoUrl} size="md" />
       </CDropdownToggle>
-      <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownHeader className="bg-body-secondary fw-semibold my-2">
-          {user ? `${user.nom} ${user.prenom}` : 'Profil'}
+      <CDropdownMenu className="pt-0">
+        <CDropdownHeader className="bg-body-secondary fw-semibold my-2 text-center">
+          {user?.nom && user?.prenom ? `${user.prenom} ${user.nom}` : 'Utilisateur'}
         </CDropdownHeader>
 
         <CDropdownItem onClick={() => navigate('/profile')}>
           <CIcon icon={cilUser} className="me-2" />
-          Profil
+          Mon Profil
         </CDropdownItem>
 
         <CDropdownItem onClick={() => navigate('/changer-mot-de-passe')}>
@@ -62,7 +71,7 @@ const AppHeaderDropdown = () => {
         <CDropdownDivider />
 
         <CDropdownItem onClick={handleLogout}>
-          <CIcon icon={cilLockLocked} className="me-2" />
+          <CIcon icon={cilAccountLogout} className="me-2" />
           Se déconnecter
         </CDropdownItem>
       </CDropdownMenu>

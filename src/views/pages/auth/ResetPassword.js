@@ -1,128 +1,164 @@
-import React, { useState, useEffect } from 'react'
-import {
-  CButton,
-  CCard,
-  CCardBody,
-  CCol,
-  CContainer,
-  CForm,
-  CFormInput,
-  CRow,
-  CSpinner
-} from '@coreui/react'
-import { useSearchParams, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
+"use client"
+
+import { useState, useEffect } from "react"
+import { CButton, CCard, CCardBody, CCol, CContainer, CForm, CFormInput, CRow, CSpinner } from "@coreui/react"
+import { useSearchParams, useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 
 const ResetPassword = () => {
   const [params] = useSearchParams()
   const navigate = useNavigate()
-
-  const [token, setToken] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [passwordConfirmation, setPasswordConfirmation] = useState('')
+  const [token, setToken] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [passwordConfirmation, setPasswordConfirmation] = useState("")
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    const tokenFromURL = params.get('token')
-    const emailFromURL = params.get('email')
-    setToken(tokenFromURL || '')
-    setEmail(emailFromURL || '')
+    const tokenFromURL = params.get("token")
+    const emailFromURL = params.get("email")
+    setToken(tokenFromURL || "")
+    setEmail(emailFromURL || "")
   }, [params])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
     if (!email || !password || !passwordConfirmation) {
-      toast.error('Tous les champs sont obligatoires.')
+      toast.error("Tous les champs sont obligatoires.")
       return
     }
-
     if (password !== passwordConfirmation) {
-      toast.error('Les mots de passe ne correspondent pas.')
+      toast.error("Les mots de passe ne correspondent pas.")
       return
     }
-
     if (!token) {
-      toast.error('Lien de réinitialisation invalide.')
+      toast.error("Lien de réinitialisation invalide.")
       return
     }
-
     setLoading(true)
     try {
-      const res = await fetch('http://localhost:8000/api/reset-password', {
-        method: 'POST',
+      const res = await fetch("http://localhost:8000/api/reset-password", {
+        method: "POST",
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           token,
           email,
           password,
-          password_confirmation: passwordConfirmation
-        })
+          password_confirmation: passwordConfirmation,
+        }),
       })
-
       const data = await res.json().catch(() => ({}))
-
       if (!res.ok) {
-        throw new Error(data.message || 'Erreur lors de la réinitialisation.')
+        throw new Error(data.message || "Erreur lors de la réinitialisation.")
       }
-
-      toast.success('✅ Mot de passe réinitialisé ! Redirection...')
-      setTimeout(() => navigate('/login'), 2000)
+      toast.success("✅ Mot de passe réinitialisé avec succès ! Redirection...")
+      setTimeout(() => navigate("/login"), 2000)
     } catch (err) {
       toast.error(`❌ ${err.message}`)
-      console.error('Erreur reset-password:', err)
+      console.error("Erreur reset-password:", err)
     } finally {
       setLoading(false)
     }
   }
 
+  const primaryColor = "#1E3A8A" // Darker blue
+  const secondaryColor = "#3B82F6" // Lighter blue for gradient
+
   return (
-    <div className="min-vh-100 d-flex align-items-center" style={{ background: '#F4F6F8' }}>
+    <div
+      className="min-vh-100 d-flex align-items-center justify-content-center"
+      style={{
+        background: "linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%)",
+      }}
+    >
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md={6} lg={5}>
-            <CCard className="p-4 shadow-sm border-0" style={{ borderRadius: '10px' }}>
-              <CCardBody>
-                <h2 className="text-center mb-4" style={{ color: '#1E3A8A' }}>
-                  Réinitialiser le mot de passe
+            <CCard className="p-5 shadow-lg border-0" style={{ borderRadius: "15px" }}>
+              <CCardBody className="d-flex flex-column align-items-center">
+                <img  src="/images/LogoCtf.png"  alt="Company Logo" style={{ width: "150px", marginBottom: "30px" }} />
+                <h2 className="text-center mb-5" style={{ color: primaryColor, fontSize: "2rem", fontWeight: "700" }}>
+                  Créez votre nouveau mot de passe
                 </h2>
-                <CForm onSubmit={handleSubmit}>
-                <CFormInput
-  type="email"
-  placeholder="Votre email"
-  value={email}
-  onChange={(e) => setEmail(e.target.value)}
-  className="mb-3"
-  required
-/>
+                <CForm onSubmit={handleSubmit} className="w-100">
+                  <CFormInput
+                    type="email"
+                    placeholder="Votre adresse email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="mb-4"
+                    required
+                    style={{
+                      borderRadius: "8px",
+                      borderColor: "#cbd5e1",
+                      padding: "12px 15px",
+                      boxShadow: "none",
+                      transition: "all 0.2s ease-in-out",
+                    }}
+                    onFocus={(e) => (e.target.style.boxShadow = `0 0 0 0.25rem rgba(59, 130, 246, 0.25)`)}
+                    onBlur={(e) => (e.target.style.boxShadow = "none")}
+                  />
                   <CFormInput
                     type="password"
                     placeholder="Nouveau mot de passe"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="mb-3"
+                    className="mb-4"
                     required
+                    style={{
+                      borderRadius: "8px",
+                      borderColor: "#cbd5e1",
+                      padding: "12px 15px",
+                      boxShadow: "none",
+                      transition: "all 0.2s ease-in-out",
+                    }}
+                    onFocus={(e) => (e.target.style.boxShadow = `0 0 0 0.25rem rgba(59, 130, 246, 0.25)`)}
+                    onBlur={(e) => (e.target.style.boxShadow = "none")}
                   />
                   <CFormInput
                     type="password"
-                    placeholder="Confirmer le mot de passe"
+                    placeholder="Confirmer le nouveau mot de passe"
                     value={passwordConfirmation}
                     onChange={(e) => setPasswordConfirmation(e.target.value)}
-                    className="mb-3"
+                    className="mb-4"
                     required
+                    style={{
+                      borderRadius: "8px",
+                      borderColor: "#cbd5e1",
+                      padding: "12px 15px",
+                      boxShadow: "none",
+                      transition: "all 0.2s ease-in-out",
+                    }}
+                    onFocus={(e) => (e.target.style.boxShadow = `0 0 0 0.25rem rgba(59, 130, 246, 0.25)`)}
+                    onBlur={(e) => (e.target.style.boxShadow = "none")}
                   />
                   <CButton
                     type="submit"
+                    className="w-100 py-3"
                     color="primary"
-                    className="w-100"
                     disabled={loading}
-                    style={{ borderRadius: '50px', fontWeight: '500' }}
+                    style={{
+                      borderRadius: "50px",
+                      fontWeight: "600",
+                      fontSize: "1.1rem",
+                      background: `linear-gradient(45deg, ${primaryColor}, ${secondaryColor})`,
+                      border: "none",
+                      boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
+                      transition: "all 0.3s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-2px)"
+                      e.currentTarget.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.3)"
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateY(0)"
+                      e.currentTarget.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.2)"
+                    }}
                   >
-                    {loading ? <CSpinner size="sm" /> : 'Réinitialiser'}
+                    {loading ? <CSpinner size="sm" /> : "Mettre à jour le mot de passe"}
                   </CButton>
                 </CForm>
               </CCardBody>

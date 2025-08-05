@@ -10,8 +10,8 @@ import 'react-datepicker/dist/react-datepicker.css'
 import ForgotPassword from './views/pages/auth/ForgotPassword'
 import ResetPassword from './views/pages/auth/ResetPassword'
 import ChangePassword from './views/pages/auth/ChangePassword';
+import Dashboard from './views/dashboard/Dashboard';
 
-// Containers
 const DefaultLayout = React.lazy(() => import("./layouts/DefaultLayout"));
 const PaieValidations = React.lazy(() => import("./views/Paie/PaieValidations"));
 
@@ -51,13 +51,8 @@ const App = () => {
           <Route path="/500" element={<Page500 />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />   
+          
 
-       {/* ✅ Route protégée pour changer le mot de passe */}
-       <Route path="/changer-mot-de-passe" element={
-            <ProtectedRoute>
-              <ChangePassword />
-            </ProtectedRoute>
-          } />
 
 
           {/* ✅ Toutes les autres routes dans le layout principal */}
