@@ -514,18 +514,31 @@ const AdminAffectations = () => {
       </CRow>
 
       {/* Modal Nouvelle Affectation - Beautiful Design */}
-      <CModal visible={modalVisible} onClose={() => setModalVisible(false)} size="lg">
-        <CModalHeader
-          style={{
-            background: `linear-gradient(135deg, ${headerFooterColor} 0%, #1e40af 100%)`,
-            color: "#FFF",
-            padding: "20px",
-          }}
-        >
-          <CModalTitle style={{ fontSize: "1.3rem", fontWeight: "600" }}>Nouvelle Affectation</CModalTitle>
-        </CModalHeader>
-        <CModalBody style={{ padding: "30px" }}>
-          <CForm>
+      <CModal visible={modalVisible} onClose={() => setModalVisible(false)} size="md" >
+      <CModalHeader
+  style={{
+    background: `linear-gradient(13</CModal>5deg, ${headerFooterColor} 0%, #1e40af 100%)`,
+    color: "#FFF",
+    padding: "20px",
+    minHeight: "60px",
+    display: "flex",
+    alignItems: "center",
+  }}
+>
+  <CModalTitle
+    style={{
+      fontSize: "1.3rem",
+      fontWeight: "600",
+      color: "#1e3a8a",
+      zIndex: 10,
+    }}
+  >
+    Nouvelle Affectation
+  </CModalTitle>
+</CModalHeader>
+
+<CModalBody style={{ padding: "15px 20px" }}>
+            <CForm>
             <CFormSelect
               label="Site"
               value={formData.site_id}

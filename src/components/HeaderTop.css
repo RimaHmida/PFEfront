@@ -11,14 +11,16 @@
   border-bottom: 1px solid #e0e0e0;
   border-right: 1px solid #e0e0e0;
   position: relative;
-  z-index: 1100;
+  z-index: 1050;
 }
 
-/* LOGOS */
 .logo-ctf {
-  height: 55px; /* 🔁 Medium size */
+  height: 50px;
+  transform: translateX(80px); /* Moves logo 20px right */
   object-fit: contain;
 }
+
+
 
 .logo-ministere {
   height: 35px; /* 🔁 Medium size */

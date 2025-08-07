@@ -469,15 +469,17 @@ const AdminUtilisateurs = () => {
       </CRow>
 
       {/* Modal Add/Edit User - Beautiful Design */}
-      <CModal visible={modalOpen} onClose={() => setModalOpen(false)} size="lg">
+      <CModal visible={modalOpen} onClose={() => setModalOpen(false)} size="md">
+        
         <CModalHeader
           style={{
             background: `linear-gradient(135deg, ${headerFooterColor} 0%, #1e40af 100%)`,
             color: "#FFF",
-            padding: "20px",
+            padding: "20px 30px",
           }}
         >
           <CModalTitle style={{ fontSize: "1.3rem", fontWeight: "600" }}>
+            
             {editMode ? "Modifier Utilisateur" : "Ajouter un Utilisateur"}
           </CModalTitle>
         </CModalHeader>
@@ -495,6 +497,7 @@ const AdminUtilisateurs = () => {
                 borderRadius: "8px",
                 padding: "10px",
                 marginBottom: "20px",
+               
               }}
             />
             {fieldErrors.nom && <div className="text-danger mb-2">{fieldErrors.nom}</div>}

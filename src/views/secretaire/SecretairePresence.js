@@ -90,7 +90,6 @@ const SecretairePresence = () => {
 
   const todayISO = new Date().toISOString().slice(0, 10)
   const hasMarkedPresence = Object.keys(presenceData).length > 0
-  const headerColor = "#1E3A8A"
 
   return (
     <CContainer className="py-4">
@@ -117,7 +116,11 @@ const SecretairePresence = () => {
         </p>
       ) : (
         affectations.map((aff) => (
-          <CCard key={aff.id} className="mb-4 shadow-sm" style={{ borderRadius: "8px", border: "1px solid #E5E7EB" }}>
+          <CCard
+            key={aff.id}
+            className="mb-4 shadow-sm"
+            style={{ borderRadius: "8px", border: "1px solid #E5E7EB" }}
+          >
             <CCardHeader
               style={{
                 background: "linear-gradient(to right, #1E3A8A, #3B82F6)",
@@ -144,30 +147,40 @@ const SecretairePresence = () => {
               </span>
             </CCardHeader>
             <CCardBody>
-              <CTable hover responsive bordered style={{ borderRadius: "8px", overflow: "hidden" }}>
+              <CTable
+                hover
+                responsive
+                bordered
+                style={{ borderRadius: "8px", overflow: "hidden" }}
+              >
                 <CTableHead style={{ background: "#F3F4F6" }}>
                   <CTableRow>
-                    <CTableHeaderCell scope="col" style={{ color: "#374151", fontWeight: "600" }}>
-                      Date
+                    <CTableHeaderCell
+                      scope="col"
+                      style={{ color: "#374151", fontWeight: "600" }}
+                    >
+                      Employé
                     </CTableHeaderCell>
-                    {aff.employes.map((emp) => (
+                    {aff.dates.map((date) => (
                       <CTableHeaderCell
-                        key={`head-${aff.id}-${emp.id}`}
+                        key={`head-${aff.id}-${date}`}
                         className="text-center"
                         style={{ color: "#374151", fontWeight: "600" }}
                       >
-                        {emp.nom} {emp.prenom}
+                        {date}
                       </CTableHeaderCell>
                     ))}
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {aff.dates.map((date) => (
-                    <CTableRow key={`row-${aff.id}-${date}`}>
-                      <CTableDataCell className="align-middle fw-bold" style={{ color: "#4B5563" }}>
-                        {date}
+                  {aff.employes.map((emp) => (
+                    <CTableRow key={`row-${aff.id}-${emp.id}`}>
+                      <CTableDataCell
+                        style={{ fontWeight: "bold", color: "#4B5563" }}
+                      >
+                        {emp.nom} {emp.prenom}
                       </CTableDataCell>
-                      {aff.employes.map((emp) => {
+                      {aff.dates.map((date) => {
                         if (!emp.dates || !emp.dates.includes(date)) {
                           return (
                             <CTableDataCell
@@ -179,18 +192,27 @@ const SecretairePresence = () => {
                             </CTableDataCell>
                           )
                         }
-                        const todayPresence = emp.presences.find((p) => p.date === date)
+                        const todayPresence = emp.presences.find(
+                          (p) => p.date === date
+                        )
                         const alreadyMarked = !!todayPresence
                         const markedPresent = todayPresence?.present
                         const isToday = date === todayISO
                         return (
-                          <CTableDataCell key={`cell-${aff.id}-${emp.id}-${date}`} className="text-center align-middle">
+                          <CTableDataCell
+                            key={`cell-${aff.id}-${emp.id}-${date}`}
+                            className="text-center align-middle"
+                          >
                             {alreadyMarked ? (
                               <CBadge
                                 color={markedPresent ? "success" : "danger"}
                                 style={{
-                                  background: markedPresent ? "#D1FAE5" : "#FEE2E2",
-                                  color: markedPresent ? "#065F46" : "#991B1B",
+                                  background: markedPresent
+                                    ? "#D1FAE5"
+                                    : "#FEE2E2",
+                                  color: markedPresent
+                                    ? "#065F46"
+                                    : "#991B1B",
                                   padding: "6px 12px",
                                   borderRadius: "20px",
                                   fontWeight: "600",
@@ -208,21 +230,34 @@ const SecretairePresence = () => {
                                   type="radio"
                                   name={`presence-${aff.id}-${date}-${emp.id}`}
                                   label="Présent"
-                                  checked={presenceData?.[aff.id]?.[date]?.[emp.id] === true}
-                                  onChange={() => handleToggle(aff.id, date, emp.id, true)}
+                                  checked={
+                                    presenceData?.[aff.id]?.[date]?.[emp.id] ===
+                                    true
+                                  }
+                                  onChange={() =>
+                                    handleToggle(aff.id, date, emp.id, true)
+                                  }
                                   style={{ cursor: "pointer" }}
                                 />
                                 <CFormCheck
                                   type="radio"
                                   name={`presence-${aff.id}-${date}-${emp.id}`}
                                   label="Absent"
-                                  checked={presenceData?.[aff.id]?.[date]?.[emp.id] === false}
-                                  onChange={() => handleToggle(aff.id, date, emp.id, false)}
+                                  checked={
+                                    presenceData?.[aff.id]?.[date]?.[emp.id] ===
+                                    false
+                                  }
+                                  onChange={() =>
+                                    handleToggle(aff.id, date, emp.id, false)
+                                  }
                                   style={{ cursor: "pointer" }}
                                 />
                               </div>
                             ) : (
-                              <span className="text-muted fst-italic" style={{ color: "#9CA3AF" }}>
+                              <span
+                                className="text-muted fst-italic"
+                                style={{ color: "#9CA3AF" }}
+                              >
                                 Non marqué
                               </span>
                             )}
@@ -254,7 +289,11 @@ const SecretairePresence = () => {
             onClick={handleSubmit}
             disabled={!hasMarkedPresence || refreshing}
           >
-            {refreshing ? <CSpinner size="sm" style={{ color: "white" }} /> : "💾 Enregistrer les présences"}
+            {refreshing ? (
+              <CSpinner size="sm" style={{ color: "white" }} />
+            ) : (
+              "💾 Enregistrer les présences"
+            )}
           </CButton>
         </div>
       )}

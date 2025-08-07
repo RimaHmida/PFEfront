@@ -396,7 +396,7 @@ const AdminEmployes = () => {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))",
           gap: "15px",
           marginBottom: "25px",
         }}
@@ -409,6 +409,8 @@ const AdminEmployes = () => {
             background: "linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)",
             overflow: "hidden",
             position: "relative",
+            maxWidth: "180px", 
+            margin: "0 auto",
           }}
         >
           <CCardBody style={{ padding: "20px", textAlign: "center", position: "relative" }}>
@@ -427,7 +429,7 @@ const AdminEmployes = () => {
             />
             <div
               style={{
-                fontSize: "1.5rem",
+                fontSize: "1rem",
                 marginBottom: "5px",
                 color: "#64748b",
               }}
@@ -436,7 +438,7 @@ const AdminEmployes = () => {
             </div>
             <h2
               style={{
-                fontSize: "2.2rem",
+                fontSize: "1.6rem",
                 fontWeight: "700",
                 color: headerFooterColor,
                 margin: "0 0 8px 0",
@@ -462,7 +464,7 @@ const AdminEmployes = () => {
                 height: "3px",
                 background: `linear-gradient(90deg, ${headerFooterColor}, #3b82f6)`,
                 borderRadius: "2px",
-                width: "40px",
+                width: "30px",
                 margin: "10px auto 0",
               }}
             />
@@ -477,9 +479,10 @@ const AdminEmployes = () => {
             background: "linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%)",
             overflow: "hidden",
             position: "relative",
+            maxWidth: "180px", 
           }}
         >
-          <CCardBody style={{ padding: "20px", textAlign: "center", position: "relative" }}>
+          <CCardBody style={{ padding: "10px", textAlign: "center", position: "relative" }}>
             {/* Smaller decorative background element */}
             <div
               style={{
@@ -655,8 +658,8 @@ const AdminEmployes = () => {
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-                    gap: "15px",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))",
+                    gap: "10px",
                     marginBottom: "20px",
                   }}
                 >
